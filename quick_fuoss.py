@@ -1,4 +1,7 @@
-import cctk, math, argparse, sys
+import cctk, math, argparse, sys, re
+
+#### USAGE:
+#### python quick_fuoss.py cation-name anion-name dielectric-constant
 
 def kd_formula(r1, r2, dielectric, temp=298):
     """
@@ -30,35 +33,37 @@ def kd_formula(r1, r2, dielectric, temp=298):
 
     return K
 
-#### USAGE:
-#### python quick_fuoss.py cation-name anion-name dielectric-constant
-#### python quick_fuoss.py --type xyzfile cation.xyz anion.xyz dielectric-constant
+def compute_kd(mol1, mol2, dielectric, temp=298, verbose=False):
+    mols = [None, None]
+    for i, n in enumerate([mol1, mol2]):
+        try:
+            if re.search("xyz$", n):
+                if verbose:
+                    print(f"Reading ion #{i+1} from file {n}...")
+                mols[i] = cctk.XYZFile.read_file(n).molecule
+            else:
+                if verbose:
+                    print(f"Reading ion #{i+1} from rdkit...")
+                mols[i] = cctk.Molecule.new_from_name(n)
+        except Exception as e:
+            print(f"Error reading molecule #{i+1}!\n{e}")
 
-parser = argparse.ArgumentParser(prog="quick_fuoss.py")
-parser.add_argument("--type", "-t", type=str, default="name")
-parser.add_argument("--temp", default=298, type=float)
-parser.add_argument("cation")
-parser.add_argument("anion")
-parser.add_argument("dielectric", type=float)
+    v1 = mols[0].volume()
+    v2 = mols[1].volume()
+    r1 = (0.75 * v1 / math.pi ) ** (1/3)
+    r2 = (0.75 * v2 / math.pi ) ** (1/3)
 
-args = vars(parser.parse_args(sys.argv[1:]))
+    Kd = kd_formula(r1, r2, dielectric, temp)
+    return Kd
 
-m1, m2 = None, None
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(prog="quick_fuoss.py")
+    parser.add_argument("--temp", default=298, type=float)
+    parser.add_argument("cation")
+    parser.add_argument("anion")
+    parser.add_argument("dielectric", type=float)
 
-if args["type"] == "name":
-    print("Reading from rdkit...")
-    m1 = cctk.Molecule.new_from_name(args["cation"])
-    m2 = cctk.Molecule.new_from_name(args["anion"])
-elif args["type"] == "xyzfile":
-    m1 = cctk.XYZFile.read_file(args["cation"]).molecule
-    m2 = cctk.XYZFile.read_file(args["anion"]).molecule
-else:
-    print(f"Can't recognize ``type`` {args['type']} -- allowed values are ``name`` and ``xyzfile``!")
+    args = vars(parser.parse_args(sys.argv[1:]))
+    Kd = compute_kd(args["cation"], args["anion"], args["dielectric"], temp=args["temp"], verbose=True)
 
-v1 = m1.volume()
-v2 = m2.volume()
-r1 = (0.75 * v1 / math.pi ) ** (1/3)
-r2 = (0.75 * v2 / math.pi ) ** (1/3)
-
-Kd = kd_formula(r1, r2, args["dielectric"], args["temp"])
-print(f"Dissociation constant:\t{Kd:.8f} M")
+    print(f"Dissociation constant:\t{Kd:.8f} M")
