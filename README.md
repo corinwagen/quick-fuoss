@@ -38,7 +38,7 @@ $ python quick_fuoss.py cation.xyz anion.xyz 12
 
 ### Testing
 
-The calculated values are in reasonable agreement with reported values<sup>4</sup>, as seen below:
+The calculated values are in reasonable agreement with reported values,<sup>4</sup> as seen below:
 
 <img src="static/test_data.png" height=250>
 
