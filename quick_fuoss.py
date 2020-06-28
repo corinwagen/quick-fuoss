@@ -67,3 +67,6 @@ if __name__ == '__main__':
     Kd = compute_kd(args["cation"], args["anion"], args["dielectric"], temp=args["temp"], verbose=True)
 
     print(f"Dissociation constant:\t{Kd:.8f} M")
+
+    G = -0.001987 * args["temp"] * math.log(Kd)
+    print(f"Ionization energy: {G:.3f} kcal/mol")
