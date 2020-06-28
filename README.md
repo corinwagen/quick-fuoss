@@ -8,7 +8,7 @@
 To run, *quick-fuoss* requires only the name of the cation and anion and the dielectric constant of the solvent in question.
 Alternatively, `.xyz` files can be supplied.
 
-*quick-fuoss* requires a working installation of [cctk](https://cctk.readthedocs.io/en/latest/).
+*quick-fuoss* requires a working installation of [cctk](https://cctk.readthedocs.io/en/latest/), which does most of the heavy lifting.
 
 ### Theory
 
@@ -17,6 +17,8 @@ This approach is purely Coulombic and neglects any specific ion/ion interactions
 Nevertheless, these approximations are reasonably satisfied for many common ion pairs.
 
 This model has been used to correct p*K*a values in relatively non-polar solvents: the present implementation is based on that literature.<sup>2,3</sup>
+
+**Please note that the current implementation of *quick-fuoss* only supports singly charged ions!**
 
 ### Usage
 
