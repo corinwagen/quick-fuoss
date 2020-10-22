@@ -8,7 +8,7 @@
 To run, *quick-fuoss* requires only the name of the cation and anion and the dielectric constant of the solvent in question.
 Alternatively, `.xyz` files can be supplied.
 
-*quick-fuoss* requires a working installation of [cctk](https://cctk.readthedocs.io/en/latest/), which does most of the heavy lifting.
+*quick-fuoss* requires a working installation of [*cctk*](https://cctk.readthedocs.io/en/latest/), which does most of the heavy lifting.
 
 ### Theory
 
