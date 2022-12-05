@@ -1,0 +1,8 @@
+LICENSE
+README.md
+setup.py
+quick_fuoss.egg-info/PKG-INFO
+quick_fuoss.egg-info/SOURCES.txt
+quick_fuoss.egg-info/dependency_links.txt
+quick_fuoss.egg-info/requires.txt
+quick_fuoss.egg-info/top_level.txt

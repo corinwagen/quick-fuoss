@@ -1,3 +1,10 @@
+.DS_Store
+*.pyc
+docs/_build/*
+docs/_autosummary/*
+pyproject.toml
+*.swp
+dist/*
+MANIFEST
 __pycache__/
-adjust_pka.py
-pka/
+*.py[cod]
